@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class MainScript : MonoBehaviour
 {
@@ -79,12 +80,31 @@ public static class Extensions
         if (i == 1 || i == 0) return 1;
         else return i * Factorial(i - 1);
     }
+    
+    public static void InvokeDelay(this MainScript.TimerDelegate timerDelegate, int seconds)
+    {
+        bool invoked = false;
+        if (seconds >= Time.time && !invoked)
+        {
+            timerDelegate.Invoke();
+            invoked = true;
+        }
+    }
 
-    public static List<T> ToList<T>(this T[] target)
-    {    
+    public static List<T> ToList<T>(this T[] value)
+    {
         List<T> result = new List<T>();
-        foreach (var item in target)
+        foreach (var item in value)
             result.Add(item);
         return result;
     }
+
+    public static T GetRandomFromList<T>(this List<T> value)
+    {
+        int randomIndex = Random.Range(0, (value.Count - 1));
+
+        return value[randomIndex];
+    }
+    
+    
 }
